@@ -29,7 +29,3 @@ c_star = m - tax
 u_star = u_func(h_star, c_star, phi)
 
 print(h_star, c_star, u_star)
-
-
-def best_choice(phi, c, h, epsilon, r, tau_g, tau_p, rho_bar):
-
