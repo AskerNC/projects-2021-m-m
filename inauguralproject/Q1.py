@@ -17,7 +17,7 @@ def u_func(h, c, phi = 0.3):
     return c**(1-phi)*h**phi
 
 #Optimize function
-def u_optimize(h, phi, epsilon, r, tau_g, tau_p, p_bar, m):
+def u_optimize(phi, epsilon, r, tau_g, tau_p, p_bar, m):
     def value_of_choice(h, phi, epsilon, r, tau_g, tau_p, p_bar, m):
         p_thilde = h * epsilon
         tax = r * h + tau_g * p_thilde + tau_p * max(p_thilde-p_bar, 0)
@@ -34,5 +34,8 @@ def u_optimize(h, phi, epsilon, r, tau_g, tau_p, p_bar, m):
     u_star = u_func(h_star, c_star, phi)
     return h_star, c_star, u_star
 
+h, c, u = u_optimize(phi, epsilon, r, tau_g, tau_p, p_bar, m)
+
+print(h, c, u)
 
 # Q2
