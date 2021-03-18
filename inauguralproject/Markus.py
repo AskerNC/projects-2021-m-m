@@ -81,7 +81,7 @@ def two_figures(x_left, y_left, title_left, xlabel_left, ylabel_left, x_right, y
 
 # Creates an array for m and containers for the values of c* and g* 
 N = 1000
-m = np.linspace(0.4,1,num=N)
+m = np.linspace(0.4,1.5,num=N)
 c_vals = np.empty(N)
 h_vals = np.empty(N)
 # Loops the optimiser over the m array.
