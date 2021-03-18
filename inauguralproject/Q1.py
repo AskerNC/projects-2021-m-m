@@ -10,6 +10,9 @@ plt.style.use('seaborn-whitegrid')
 #%load_ext autoreload
 #%autoreload 2
 
+#set seed
+np.random.seed(1)
+
 
 phi = 0.3
 epsilon = 0.5
@@ -17,7 +20,7 @@ r = 0.03
 tau_g = 0.012
 tau_p = 0.004
 p_bar = 3
-m = 0.5
+m = 0.73
 
 #Q1
 
@@ -52,8 +55,8 @@ print(h, c, u)
 
 # Q2
 
-N = 100
-m_vec = np.linspace(0.4, 2.5, N)
+N = 1000
+m_vec = np.linspace(0.4, 1.5, N)
 h_vec = np.zeros(N)
 c_vec = np.zeros(N)
 u_vec = np.zeros(N)
@@ -87,3 +90,24 @@ ax_right.set_ylabel('c*')
 ax_right.grid(True)
 
 plt.show()
+
+
+#Q3
+
+N = 10000
+m_vec = np.random.lognormal(-0.4, 0.35, N)
+h_vec = np.zeros(N)
+c_vec = np.zeros(N)
+u_vec = np.zeros(N)
+
+for i in range(N):
+    h_vec[i], c_vec[i], u_vec[i] = u_optimize(phi, epsilon, r, tau_g, tau_p, p_bar, m_vec[i])
+
+def tax(h, tau_g, tau_p):
+    T = 0
+    for i, hi in enumerate(h_vec):
+        T += tau_g*hi + max(hi-p_bar, 0)
+    return T
+
+T = tax(h_vec, tau_g, tau_p)
+print(T)

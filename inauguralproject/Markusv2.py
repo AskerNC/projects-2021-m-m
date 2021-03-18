@@ -117,7 +117,3 @@ def tax_revenue(seed, size, low, high):
     return tax_rev
 
 tax_revenue(seed, size, low, high)
-
-
-
-
