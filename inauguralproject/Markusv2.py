@@ -89,8 +89,8 @@ h_vals = np.empty(N)
 for i,mi in enumerate(m):
     ch_star = u_optimize(phi, epsilon, r, tau_g, tau_p, p_bar, mi)
 
-    c_vals[i] = ch_star[0]
-    h_vals[i] = ch_star[1]
+    h_vals[i] = ch_star[0]
+    c_vals[i] = ch_star[1]
 
 two_figures(m, c_vals, "Consumption", "$m$", "$c$", m, h_vals, "House Quality", "$m$", "$h$")
 
@@ -108,7 +108,7 @@ def tax_burden(seed, size, low, high, phi=0.3, epsilon=0.5, r=0.03, tau_g=0.012,
 
     for i, mi in enumerate(mi):
         ch_star = u_optimize(phi, epsilon, r, tau_g, tau_p, p_bar, mi)
-        tax_i = tau_g*ch_star[1] + tau_p*max(ch_star[1]-p_bar,0)
+        tax_i = tau_g*ch_star[0] + tau_p*max(ch_star[0]-p_bar,0)
         tax_burd += tax_i/size
     return tax_burd
 
