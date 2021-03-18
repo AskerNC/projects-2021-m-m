@@ -79,11 +79,12 @@ def two_figures(x_left, y_left, title_left, xlabel_left, ylabel_left, x_right, y
     ax_right.set_ylabel(ylabel_right)
     fig.show()
 
-# Creates an array for m and containers for the values of c* and g* 
-N = 1000
+# Creates an array for m and containers for the values of c* and h* 
+N = 10000
 m = np.linspace(0.4,1.5,num=N)
 c_vals = np.empty(N)
 h_vals = np.empty(N)
+
 # Loops the optimiser over the m array.
 for i,mi in enumerate(m):
     ch_star = u_optimize(phi, epsilon, r, tau_g, tau_p, p_bar, mi)
@@ -92,3 +93,23 @@ for i,mi in enumerate(m):
     h_vals[i] = ch_star[1]
 
 two_figures(m, c_vals, "Consumption", "$m$", "$c$", m, h_vals, "House Quality", "$m$", "$h$")
+
+#Q3
+seed = 1
+size = 10000
+low = -0.4
+high = 0.35
+
+def tax_burder(seed, size, low, high, epsilon=0.5, tau_g=0.012, tau_p=0.004,p_bar=3):
+    np.random.seed(seed)
+    mi = np.random.lognormal(low=low,high=high,size=size)
+
+    tax_burd = 0
+
+    for i, mi in enumerate(mi):
+    ch_star = u_optimize(phi, epsilon, r, tau_g, tau_p, p_bar, mi)
+    tax_i = tau_g*ch_star[1] + tau_p*max(ch_star[1]-p_bar,0)
+    tax_burd += tax_i/N
+    return tax_burd
+
+tax_burden(seed, size, low, high)

@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 plt.style.use('seaborn-whitegrid')
 
 # autoreload modules when code is run
-%load_ext autoreload
-%autoreload 2
+#%load_ext autoreload
+#%autoreload 2
 
 #set seed
 np.random.seed(1)
