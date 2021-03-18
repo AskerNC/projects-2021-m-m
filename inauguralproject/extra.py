@@ -1,12 +1,7 @@
 import numpy as np
 from types import SimpleNamespace
 from scipy import optimize
-import matplotlib.pyplot as plt
-plt.style.use('seaborn-whitegrid')
 
-# autoreload modules when code is run
-%load_ext autoreload
-%autoreload 2
 
 par = SimpleNamespace()
 
@@ -33,15 +28,17 @@ def u_optimize(parameters):
         c = parameters.m - tax
         return -u_func(h, c, parameters)
     
-    res = optimize.minimize_scalar(objective, method ='brent')
+    res = optimize.minimize_scalar(objective, method ='brent', args = (parameters))
 
     h_star = res.x
     p_thilde = h_star * parameters.epsilon
-    tax = parameters.r * parameters.h_star + parameters.tau_g * p_thilde + parameters.tau_p * max(p_thilde-parameters.p_bar, 0)
+    tax = parameters.r * h_star + parameters.tau_g * p_thilde + parameters.tau_p * max(p_thilde-parameters.p_bar, 0)
     c_star = parameters.m - tax
-    u_star = u_func(h_star, c_star, par)
+    u_star = u_func(h_star, c_star, parameters)
     return h_star, c_star, u_star
 
 h, c, u = u_optimize(par)
+
+print(h, c, u)
 
 # Q2
