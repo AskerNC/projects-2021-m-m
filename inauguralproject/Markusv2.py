@@ -100,7 +100,7 @@ size = 10000
 low = -0.4
 high = 0.35
 
-def tax_burder(seed, size, low, high, epsilon=0.5, tau_g=0.012, tau_p=0.004,p_bar=3):
+def tax_burden(seed, size, low, high, epsilon=0.5, tau_g=0.012, tau_p=0.004,p_bar=3):
     np.random.seed(seed)
     mi = np.random.lognormal(low=low,high=high,size=size)
 
