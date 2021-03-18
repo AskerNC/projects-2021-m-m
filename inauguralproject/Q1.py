@@ -11,7 +11,8 @@ plt.style.use('seaborn-whitegrid')
 #%autoreload 2
 
 #set seed
-np.random.seed(1)
+seed = 1
+np.random.seed(seed)
 
 
 phi = 0.3
