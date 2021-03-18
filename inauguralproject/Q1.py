@@ -95,6 +95,7 @@ plt.show()
 
 #Q3
 
+np.random.seed(seed)
 N = 10000
 m_vec = np.random.lognormal(-0.4, 0.35, N)
 h_vec = np.zeros(N)
@@ -106,7 +107,7 @@ for i in range(N):
 
 def tax(h, tau_g, tau_p):
     T = 0
-    for i, hi in enumerate(h_vec):
+    for i, hi in enumerate(h):
         T += tau_g*hi + tau_p*max(hi-p_bar, 0)
     return T
 
