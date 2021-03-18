@@ -20,7 +20,7 @@ r = 0.03
 tau_g = 0.012
 tau_p = 0.004
 p_bar = 3
-m = 0.73
+m = 0.5
 
 #Q1
 
@@ -106,8 +106,11 @@ for i in range(N):
 def tax(h, tau_g, tau_p):
     T = 0
     for i, hi in enumerate(h_vec):
-        T += tau_g*hi + max(hi-p_bar, 0)
+        T += tau_g*hi + tau_p*max(hi-p_bar, 0)
     return T
 
 T = tax(h_vec, tau_g, tau_p)
 print(T)
+
+tax_burden = T/N
+print(tax_burden)
