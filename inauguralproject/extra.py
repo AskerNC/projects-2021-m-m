@@ -22,27 +22,26 @@ par.m = 0.5
 
 
 #Utility function
-def u_func(h, c, par):
-    return c**(1-par.phi)*h**par.phi
+def u_func(h, c, parameters):
+    return c**(1-parameters.phi)*h**parameters.phi
 
 #Optimize function
-def u_optimize(par):
-    def objective(h, par):
-        p_thilde = h * par.epsilon
-        tax = par.r * h + par.tau_g * p_thilde + par.tau_p * max(p_thilde-par.p_bar, 0)
-        c = par.m - tax
-        return -u_func(h, c, par)
-
-
-    res = optimize.minimize_scalar(value_of_choice, method ='brent', args=(par))
+def u_optimize(parameters):
+    def objective(h, parameters):
+        p_thilde = h * parameters.epsilon
+        tax = parameters.r * h + parameters.tau_g * p_thilde + parameters.tau_p * max(p_thilde-parameters.p_bar, 0)
+        c = parameters.m - tax
+        return -u_func(h, c, parameters)
+    
+    res = optimize.minimize_scalar(objective, method ='brent')
 
     h_star = res.x
-    p_thilde = h_star * par.epsilon
-    tax = par.r * par.h_star + par.tau_g * p_thilde + par.tau_p * max(p_thilde-par.p_bar, 0)
-    c_star = m - tax
+    p_thilde = h_star * parameters.epsilon
+    tax = parameters.r * parameters.h_star + parameters.tau_g * p_thilde + parameters.tau_p * max(p_thilde-parameters.p_bar, 0)
+    c_star = parameters.m - tax
     u_star = u_func(h_star, c_star, par)
     return h_star, c_star, u_star
 
-h, c, u = u_optimize(par=par)
+h, c, u = u_optimize(par)
 
 # Q2
