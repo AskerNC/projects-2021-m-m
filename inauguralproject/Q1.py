@@ -49,3 +49,5 @@ h, c, u = u_optimize(phi, epsilon, r, tau_g, tau_p, p_bar, m)
 print(h, c, u)
 
 # Q2
+
+hej markus
