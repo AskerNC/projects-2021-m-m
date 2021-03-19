@@ -1,8 +1,6 @@
 import numpy as np
 from scipy import optimize
-import numpy as np
 from types import SimpleNamespace
-from scipy import optimize
 import matplotlib.pyplot as plt
 plt.style.use('seaborn-whitegrid')
 
