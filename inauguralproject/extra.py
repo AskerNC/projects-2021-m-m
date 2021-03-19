@@ -1,4 +1,5 @@
 import numpy as np
+import copy
 from types import SimpleNamespace
 from scipy import optimize
 import matplotlib.pyplot as plt
@@ -7,9 +8,6 @@ plt.style.use('seaborn-whitegrid')
 # autoreload modules when code is run
 #%load_ext autoreload
 #%autoreload 2
-
-#set seed
-seed = 1
 
 
 #Creates parameters as a namespace
@@ -23,29 +21,30 @@ par.tau_g = 0.012
 par.tau_p = 0.004
 par.p_bar = 3
 par.m = 0.5
+par.seed = 1
 
 #Q1
 
 
 #Utility function
-def u_func(h, c, parameters):
-    return c**(1-parameters.phi)*h**parameters.phi
+def u_func(h, c, par):
+    return c**(1-par.phi)*h**par.phi
 
 #Optimize function
-def u_optimize(parameters):
-    def objective(h, parameters):
-        p_thilde = h * parameters.epsilon
-        tax = parameters.r * h + parameters.tau_g * p_thilde + parameters.tau_p * max(p_thilde-parameters.p_bar, 0)
-        c = parameters.m - tax
-        return -u_func(h, c, parameters)
+def u_optimize(par):
+    def objective(h, par):
+        p_thilde = h * par.epsilon
+        tax = par.r * h + par.tau_g * p_thilde + par.tau_p * max(p_thilde-par.p_bar, 0)
+        c = par.m - tax
+        return -u_func(h, c, par)
     
-    res = optimize.minimize_scalar(objective, method ='brent', args = (parameters))
+    res = optimize.minimize_scalar(objective, method ='brent', args = (par))
 
     h_star = res.x
-    p_thilde = h_star * parameters.epsilon
-    tax = parameters.r * h_star + parameters.tau_g * p_thilde + parameters.tau_p * max(p_thilde-parameters.p_bar, 0)
-    c_star = parameters.m - tax
-    u_star = u_func(h_star, c_star, parameters)
+    p_thilde = h_star * par.epsilon
+    tax = par.r * h_star + par.tau_g * p_thilde + par.tau_p * max(p_thilde-par.p_bar, 0)
+    c_star = par.m - tax
+    u_star = u_func(h_star, c_star, par)
     return h_star, c_star, u_star
 
 h, c, u = u_optimize(par)
@@ -100,3 +99,44 @@ for i in range(N):
 Q2 = two_figures(m_vec, c_vec, "Consumption", "$m$", "$c$", m_vec, h_vec, "House Quality", "$m$", "$h$")
 #Shows graph
 Q2.show()
+
+
+#Q3
+
+def tax_total(par):
+    np.random.seed(seed)
+    T = 0
+    for i in range(par.pop):
+        par.m = np.random.lognormal(par.mu, par.sigma)
+        h_cit, c_cit, u_cit = u_optimize(par)
+        T += par.tau_g*h_cit + par.tau_p*max(h_cit-par.p_bar, 0)
+    return T
+
+
+#Defining population size, mean and standard deviation
+par.pop = 10000
+par.mu = -0.4
+par.sigma = 0.35
+
+T = tax_total(par)
+print(T)
+
+tax_burden = T_1/par.pop
+print(tax_burden)
+
+
+
+#Q4
+par2 = copy.copy(par)
+
+par2.epsilon = 0.8
+par2.tau_g = 0.01
+par2.tau_p = 0.009
+par2.p_bar = 8
+
+T_reform = tax_total(par2)
+print(T_reform)
+
+tax_burden_reform = T_reform/par2.pop
+print(tax_burden)
+
