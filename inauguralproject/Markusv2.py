@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 plt.style.use('seaborn-whitegrid')
 
 # autoreload modules when code is run
-%load_ext autoreload
+#%load_ext autoreload
 %autoreload 2
 
 
