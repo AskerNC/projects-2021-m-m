@@ -28,11 +28,15 @@ par.seed = 1
 
 #Utility function
 def u_func(h, c, par):
+    "Create the utility function given from the assignment text "
     return c**(1-par.phi)*h**par.phi
 
 #Optimize function
 def u_optimize(par):
+    "Create the optimizing function that uses the objective function to derive maximum problem given the constraints. It then calculates the optimal values for h, c and u."
     def objective(h, par):
+        "Defines the maximization problem given the parameters stored in par. and the constraints given by the assignment."
+        "It returns the negative utility function that is used to find the maximums. This is to invers the minimization that the function would otherwise do"
         p_thilde = h * par.epsilon
         tax = par.r * h + par.tau_g * p_thilde + par.tau_p * max(p_thilde-par.p_bar, 0)
         c = par.m - tax
@@ -103,6 +107,8 @@ Q2.show()
 
 #Q3
 def tax_total(par): 
+    "Sets a seed number and then reuns the optimization given the paramaters over a lognormal distributed N number of firms.
+    " It then calculates the total tax from these N number of firms"
     np.random.seed(par.seed)
     T = 0
     for i in range(par.pop):
