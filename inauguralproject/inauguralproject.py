@@ -132,8 +132,11 @@ def tax_total(par):
     
         T (float): total tax revenue
     """
+    # Set seed and tax = 0
     np.random.seed(par.seed)
     T = 0
+    # Loop through every citizen in the population and calculate optimal choices
+    # and tax given those choices
     for i in range(par.pop):
         par.m = np.random.lognormal(par.mu, par.sigma)
         h_cit, c_cit, u_cit = u_optimize(par)
