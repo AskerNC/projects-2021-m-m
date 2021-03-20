@@ -102,9 +102,8 @@ Q2.show()
 
 
 #Q3
-
-def tax_total(par):
-    np.random.seed(seed)
+def tax_total(par): 
+    np.random.seed(par.seed)
     T = 0
     for i in range(par.pop):
         par.m = np.random.lognormal(par.mu, par.sigma)
@@ -121,7 +120,7 @@ par.sigma = 0.35
 T = tax_total(par)
 print(T)
 
-tax_burden = T_1/par.pop
+tax_burden = T/par.pop
 print(tax_burden)
 
 
