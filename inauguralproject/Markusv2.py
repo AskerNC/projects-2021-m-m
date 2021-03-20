@@ -8,7 +8,7 @@ plt.style.use('seaborn-whitegrid')
 
 # autoreload modules when code is run
 #%load_ext autoreload
-%autoreload 2
+#%autoreload 2
 
 
 phi = 0.3
