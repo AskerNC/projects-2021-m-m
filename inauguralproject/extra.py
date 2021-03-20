@@ -107,8 +107,8 @@ Q2.show()
 
 #Q3
 def tax_total(par): 
-    "Sets a seed number and then reuns the optimization given the paramaters over a lognormal distributed N number of firms.
-    " It then calculates the total tax from these N number of firms"
+    "Sets a seed number and then reuns the optimization given the paramaters over a lognormal distributed N number of firms."
+    "It then calculates the total tax from these N number of firms"
     np.random.seed(par.seed)
     T = 0
     for i in range(par.pop):
