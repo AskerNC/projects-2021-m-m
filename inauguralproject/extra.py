@@ -142,11 +142,12 @@ for i in range(par.pop):
 
 #Creates and plots figure
 
-bonus = plt.figure(dpi=100)
-ax_left = bonus.add_subplot(1,1,1)
+bonus1 = plt.figure(dpi=100)
+ax_left = bonus1.add_subplot(1,1,1)
 ax_left.hist(m_pop,bins=100,density=True,alpha=0.5,label='cash-on-hand')
 
-ax_right = bonus.add_subplot(1,1,1)
+bonus2 = plt.figure(dpi=100)
+ax_right = bonus2.add_subplot(1,1,1)
 ax_right.hist(h_pop,bins=100,density=True,alpha=0.5,label='housing')
 #ax.legend(loc='upper left');
 # note: the ; stops output from being printed

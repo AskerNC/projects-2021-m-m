@@ -172,5 +172,5 @@ def base_tax_pct(par):
         par.tau_g = tau_g
         return tax_total(par) - par.T_goal
     sol = optimize.root(obj, 0.01, args=(par))
-    tau = sol.x
+    tau = float(sol.x)
     return tau
