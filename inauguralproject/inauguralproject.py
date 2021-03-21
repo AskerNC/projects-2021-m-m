@@ -46,7 +46,7 @@ def u_optimize(par):
     Local variables:
 
         p_thilde (float): public housing assement price
-        tax (float): tax paid as a function of housing quality
+        tax (float): interest rates and tax paid as a function of housing quality
         c (float): other consumption
     Returns:
     
@@ -101,12 +101,11 @@ def two_figures(x_left, y_left, title_left, xlabel_left, ylabel_left, x_right, y
     ax_right.set_xlabel(xlabel_right)
     ax_right.set_ylabel(ylabel_right)
     ax_right.grid(grid)
-    return fig
 
 # Tax revenue function
 def tax_total(par):
     """ 
-    Finds total tax revenue in a log normal distributed population
+    Finds total tax burden in a log normal distributed population
     
     Args:
        
@@ -125,12 +124,12 @@ def tax_total(par):
     Local variables:
 
         h_cit (float): housing quality choice of one citizen in the population
-        h_cit (float): other consumption choice of one citizen in the population
-        h_cit (float): utility for one citizen in the population given chice of h and c
+        c_cit (float): other consumption choice of one citizen in the population
+        u_cit (float): utility for one citizen in the population given chice of h and c
 
     Returns:
     
-        T (float): total tax revenue
+        T (float): total tax burden
     """
     # Set seed and tax = 0
     np.random.seed(par.seed)
@@ -146,7 +145,7 @@ def tax_total(par):
 # Base tax percentage function
 def base_tax_pct(par):
     """ 
-    Finds optimal base tax percentage for tax reform given the tax revenue before the reform
+    Finds optimal base tax percentage for tax reform given the tax burden before the reform
     Uses root optimisation
     
     Args:
@@ -163,7 +162,7 @@ def base_tax_pct(par):
             seed (int): seed number for random draws
             mu (float): mean value for the distribution
             sigma (float): standard deviation for the distribution
-            T_goal (float): level of tax revenue the policy maker wants to hit
+            T_goal (float): level of tax burden the policy maker wants to hit
 
     Returns:
     
