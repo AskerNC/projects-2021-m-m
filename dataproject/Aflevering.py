@@ -42,8 +42,7 @@ unempl.loc[unempl.municipality == 'Samsø'][unempl.gender == 'Men']
 
 #Making graphs
 unempl.info()
-unempl.time = unempl.time.astype(int)
-unempl.loc[unempl['municipality'] == 'Samsø',:].plot(x='time',y='unemployed',legend=False)
+unempl.loc[unempl['municipality'] == 'Samsø',:].plot(x=int('time'),y='unemployed',legend=False)
 
 
 
