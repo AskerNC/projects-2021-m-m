@@ -30,4 +30,7 @@ unemp_api.head(5)
 #Beginning of data cleaning
 unempl = unemp_api
 unempl.rename(columns = {"OMRÅDE": "municipality", "ALDER":"age", "KØN":"gender","TID":"time","INDHOLD":"unemployed"}, inplace=True)
+drop_columns = ["YDELSESTYPE", "AKASSE"] #Drops the data from YDELSESTYPE and AKASSE
+unempl.drop(drop_columns, axis=1, inplace=True)
+
 
