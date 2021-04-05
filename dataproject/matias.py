@@ -48,6 +48,8 @@ unempl.info()
 fig = plt.figure()
 ax = fig.add_subplot(1,1,1)
 
-unempl.groupby('time')['unemployed'].plot(ax=ax,legend=False)
+unempl.groupby('time')['unemployed'].plot(ax=ax,legend=True)
+
+unempl.loc[unempl['municipality'] == 'Samsø',:].plot(ax=ax,legend=True)
 
 fig.show()
