@@ -15,7 +15,7 @@ tables = Dst.get_tables(subjects=['04'])
 tables[tables.id == 'AUF01']
 unemp_pers = Dst.get_variables(table_id='AUF01')
 
-for id in ['YDELSESTYPE','ALDER','KØN']:
+for id in ['YDELSESTYPE','ALDER','KØN', 'TID']:
     " Finds the possible IDs for the chosen variables within the table and prints them with"
     " their associated text to describe the IDs"
     print(id)
