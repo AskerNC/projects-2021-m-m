@@ -19,3 +19,7 @@ for id in ['YDELSESTYPE','ALDER','KØN']:
     for value in values:      
         print(f' id = {value["id"]}, text = {value["text"]}')
 
+variables = {'OMRÅDE':['*'],'YDELSESTYPE':['TOT'],'ALDER':['*'],'KØN':['M','K'],'TID':['*']}
+unemp_api = Dst.get_data(table_id= 'AUF01', variables=variables)
+unemp_api.head(5)
+
