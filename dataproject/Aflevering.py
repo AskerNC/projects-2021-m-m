@@ -32,5 +32,11 @@ unempl = unemp_api
 unempl.rename(columns = {"OMRÅDE": "municipality", "ALDER":"age", "KØN":"gender","TID":"time","INDHOLD":"unemployed"}, inplace=True)
 drop_columns = ["YDELSESTYPE", "AKASSE"] #Drops the data from YDELSESTYPE and AKASSE
 unempl.drop(drop_columns, axis=1, inplace=True)
+    #Deletes any row, where it isn't a municipality
+I = unempl.municipality.str.contains('Region')
+I |= unempl.municipality.str.contains('Province')
+I |= unempl.municipality.str.contains('All Denmark')
+unempl = unempl.loc[I == False] #Keep everything that isn't "I"
+
 
 
