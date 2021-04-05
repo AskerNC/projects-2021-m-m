@@ -28,7 +28,7 @@ unemp_api = Dst.get_data(table_id= 'AUF01', variables=variables)
 unemp_api.head(5)
 
 #Beginning of data cleaning
-unempl = unemp_api
+unempl = unemp_api.copy()
 unempl.rename(columns = {"OMRÅDE": "municipality", "ALDER":"age", "KØN":"gender","TID":"time","INDHOLD":"unemployed"}, inplace=True)
 drop_columns = ["YDELSESTYPE", "AKASSE"] #Drops the data from YDELSESTYPE and AKASSE
 unempl.drop(drop_columns, axis=1, inplace=True)
@@ -43,10 +43,13 @@ unempl.loc[unempl.municipality == 'Samsø'][unempl.gender == 'Men']
 #Making graphs
 unempl.info()
 
+unempl.loc[:,'time']= pd.to_datetime(unempl.loc[:,'time'].str.replace('M',''),format='%Y%m')
+
+
 fig = plt.figure()
 ax = fig.add_subplot(1,1,1)
 
-unempl.loc[unempl['municipality'] == 'Samsø',:].plot(x="time", y = "unemployed",legend=True)
+unempl.loc[unempl['municipality'] == 'Samsø',:].plot(x="time", y = "unemployed",legend=True,ax=ax)
 plt.show()
 
 
