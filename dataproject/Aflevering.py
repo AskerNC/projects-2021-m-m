@@ -12,4 +12,4 @@ Dst.get_subjects()
 tables = Dst.get_tables(subjects=['04'])
 tables[tables.id == 'AUF01']
 unemp_pers = Dst.get_variables(table_id='AUF01')
-unemp_pers
+
