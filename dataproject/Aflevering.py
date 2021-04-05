@@ -7,6 +7,8 @@ import pydst
 import matplotlib.pyplot as plt
 plt.style.use('seaborn-whitegrid')
 
+
+#Begin to download data using pydst: Danish Statistical Banks Python integration
 Dst = pydst.Dst(lang='en')
 Dst.get_subjects()
 tables = Dst.get_tables(subjects=['04'])
@@ -24,4 +26,8 @@ for id in ['YDELSESTYPE','ALDER','KØN']:
 variables = {'OMRÅDE':['*'],'YDELSESTYPE':['TOT'],'ALDER':['TOT'],'KØN':['M','K'],'TID':['*']}
 unemp_api = Dst.get_data(table_id= 'AUF01', variables=variables)
 unemp_api.head(5)
+
+#Beginning of data cleaning
+unempl = unemp_api
+unempl.rename(columns = {"OMRÅDE": "municipality", "ALDER":"age", "KØN":"gender","TID":"time","INDHOLD":"unemployed"}, inplace=True)
 
