@@ -15,7 +15,7 @@ tables = Dst.get_tables(subjects=['04'])
 tables[tables.id == 'AUF01']
 unemp_pers = Dst.get_variables(table_id='AUF01')
 
-for id in ['YDELSESTYPE','ALDER','KØN', 'TID']:
+for id in ['YDELSESTYPE','ALDER','KØN']:
     " Finds the possible IDs for the chosen variables within the table and prints them with"
     " their associated text to describe the IDs"
     print(id)
@@ -37,6 +37,7 @@ I = unempl.municipality.str.contains('Region')
 I |= unempl.municipality.str.contains('Province')
 I |= unempl.municipality.str.contains('All Denmark')
 unempl = unempl.loc[I == False] #Keep everything that isn't "I"
-
+unempl.head(10)
+unempl.loc[unempl.municipality == 'Samsø']
 
 
