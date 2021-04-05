@@ -42,7 +42,12 @@ unempl.loc[unempl.municipality == 'Samsø'][unempl.gender == 'Men']
 
 #Making graphs
 unempl.info()
-unempl.loc[unempl['municipality'] == 'Samsø',:].plot(x=int('time'),y='unemployed',legend=False)
+unempl.loc[unempl['municipality'] == 'Samsø',:].plot(x='time',y='unemployed',legend=False)
+
+fig = plt.figure()
+ax = fig.add_subplot(1,1,1)
+
+unempl.groupby('municipality')['unemployed'].plot(ax=ax,style='-o')
 
 
 
