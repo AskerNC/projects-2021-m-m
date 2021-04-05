@@ -38,6 +38,13 @@ I |= unempl.municipality.str.contains('Province')
 I |= unempl.municipality.str.contains('All Denmark')
 unempl = unempl.loc[I == False] #Keep everything that isn't "I"
 unempl.head(10)
-unempl.loc[unempl.municipality == 'Samsø']
+unempl.loc[unempl.municipality == 'Samsø'][unempl.gender == 'Men']
+
+#Making graphs
+unempl.info()
+unempl.time = unempl.time.astype(int)
+unempl.loc[unempl['municipality'] == 'Samsø',:].plot(x='time',y='unemployed',legend=False)
+
+
 
 
