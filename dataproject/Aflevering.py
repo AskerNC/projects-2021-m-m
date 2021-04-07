@@ -44,7 +44,7 @@ unempl.loc[unempl.municipality == 'Samsø'][unempl.gender == 'Men']
 fig = plt.figure()
 ax = fig.add_subplot(1,1,1)
 
-unempl.loc[unempl['municipality'] == 'Samsø',:].plot(ax=ax, x="time", y = "unemployed",legend=True)
+unempl.loc[unempl['municipality'] == 'Samsø', :][unempl['gender'] == 'Men'].plot(ax=ax, x="time", y = "unemployed",legend=True)
 plt.show()
 
 
