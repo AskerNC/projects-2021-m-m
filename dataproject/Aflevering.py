@@ -27,11 +27,15 @@ for id in ['YDELSESTYPE','ALDER','KØN']:
 variables = {'OMRÅDE':['*'],'YDELSESTYPE':['TOT'],'ALDER':['TOT'],'KØN':['M','K'],'TID':['*']}
 unempl_AUF1 = Dst.get_data(table_id= 'AUF01', variables=variables)
 unempl_AUF2 = Dst.get_data(table_id= 'AUF02', variables=variables)
-#Since AUF2 has the actual unemployment numbers, but AUF1 have more recent data, we choose to stack these on top of eachother.
-concat = pd.concat([unempl_AUF2, unempl_AUF1[-16:-1]])
-concat.head(-1)
-unempl_AUF2.head(-1)
 
+#Rewrite the TID parameter to be in datetime
+unempl_AUF1.loc[:,'TID']= pd.to_datetime(unempl_AUF1.loc[:,'TID'].str.replace('M',''),format='%Y%m')
+unempl_AUF2.loc[:,'TID']= pd.to_datetime(unempl_AUF2.loc[:,'TID'].str.replace('M',''),format='%Y%m')
+unempl_AUF2.head(-1)
+#Since AUF2 has the actual unemployment numbers, but AUF1 have more recent data, we choose to stack these on top of eachother.
+I = (unempl_AUF1["TID"] > "2019-06-01")
+concat = pd.concat([unempl_AUF2, unempl_AUF1[I == True]])
+concat.head(-1)
 
 #Beginning of data cleaning
 unempl = concat
