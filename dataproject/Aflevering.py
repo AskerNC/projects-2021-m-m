@@ -13,22 +13,26 @@ Dst = pydst.Dst(lang='en')
 Dst.get_subjects()
 tables = Dst.get_tables(subjects=['04'])
 tables[tables.id == 'AUF01']
-unemp_pers = Dst.get_variables(table_id='AUF01')
+unempl_pers = Dst.get_variables(table_id='AUF01')
 
+#We find the possible IDs for the chosen variables within the table and prints them with
+#their associated text to describe the IDs
 for id in ['YDELSESTYPE','ALDER','KØN']:
-    " Finds the possible IDs for the chosen variables within the table and prints them with"
-    " their associated text to describe the IDs"
+    
     print(id)
-    values = unemp_pers.loc[unemp_pers.id == id,['values']].values[0,0]
+    values = unempl_pers.loc[unempl_pers.id == id,['values']].values[0,0]
     for value in values:      
         print(f' id = {value["id"]}, text = {value["text"]}')
 
 variables = {'OMRÅDE':['*'],'YDELSESTYPE':['TOT'],'ALDER':['TOT'],'KØN':['M','K'],'TID':['*']}
-unemp_api = Dst.get_data(table_id= 'AUF01', variables=variables)
-unemp_api.head(5)
-
+unempl_AUF1 = Dst.get_data(table_id= 'AUF01', variables=variables)
+unempl_AUF2 = Dst.get_data(table_id= 'AUF02', variables=variables)
+#Since AUF2 has the actual unemployment numbers, but AUF1 have more recent data, we choose to stack these on top of eachother.
+concat = pd.concat([unempl_AUF2, unempl_AUF1[-6:-1]])
+concat.head(-1)
+unempl_AUF1.head(-1)
 #Beginning of data cleaning
-unempl = unemp_api
+unempl = concat
 unempl.rename(columns = {"OMRÅDE": "municipality", "ALDER":"age", "KØN":"gender","TID":"time","INDHOLD":"unemployed"}, inplace=True)
 drop_columns = ["YDELSESTYPE", "AKASSE"] #Drops the data from YDELSESTYPE and AKASSE
 unempl.drop(drop_columns, axis=1, inplace=True)
