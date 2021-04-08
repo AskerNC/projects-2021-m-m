@@ -32,12 +32,13 @@ unempl_AUF2 = Dst.get_data(table_id= 'AUF02', variables=variables)
 unempl_AUF1.loc[:,'TID']= pd.to_datetime(unempl_AUF1.loc[:,'TID'].str.replace('M',''),format='%Y%m')
 unempl_AUF2.loc[:,'TID']= pd.to_datetime(unempl_AUF2.loc[:,'TID'].str.replace('M',''),format='%Y%m')
 unempl_AUF2.head(-1)
-#Since AUF2 has the actual unemployment numbers, but AUF1 have more recent data, we choose to stack these on top of eachother.
+#Since AUF2 has the actual unemployment numbers, but AUF1 have more recent data, we choose to merge these.
 I = (unempl_AUF1["TID"] > "2019-06-01") #Choose to stack only rows in AUF1, where there are newer data than in AUF2
 unempl_AUF1 = unempl_AUF1.loc[I == True]
 unempl_AUF1
 #concat = pd.concat([unempl_AUF2, unempl_AUF1])
 outer = pd.merge(unempl_AUF1, unempl_AUF2, how='outer') 
+outer.head()
 
 #Beginning of data cleaning
 unempl = outer.copy()
@@ -59,4 +60,18 @@ unempl.loc[unempl['municipality'] == 'Samsø', :][unempl['gender'] == 'Men'].plo
 plt.show()
 
 
-
+#Widget for all municipalities and for each gender
+import ipywidgets as widgets
+def plot_interact(df, municipality):
+    I = df['municipality'] == municipality
+    I |= df['gender'] == gender
+    ax = df.loc[I,:].plot(x='time', y = 'unemployed', style='-o', legend=False)
+widgets.interact(plot_interact, 
+    df = widgets.fixed(unempl),
+    municipality = widgets.Dropdown(description='Municipality', 
+    options=unempl.municipality.unique(), 
+    value='Roskilde'),
+    gender = widgets.Dropdown(description='Gender',
+    options=unempl.gender.unique(),
+    value='Men')
+);
