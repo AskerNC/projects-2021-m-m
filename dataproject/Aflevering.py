@@ -38,7 +38,8 @@ unempl_AUF1 = unempl_AUF1.loc[I == True]
 unempl_AUF1
 #concat = pd.concat([unempl_AUF2, unempl_AUF1])
 outer = pd.merge(unempl_AUF1, unempl_AUF2, how='outer') 
-outer.head()
+outer.head(-1)
+unemlp3 = unempl_AUF2.append(unempl_AUF1)
 
 #Beginning of data cleaning
 unempl = outer.copy()
@@ -64,8 +65,8 @@ plt.show()
 import ipywidgets as widgets
 def plot_interact(df, municipality, gender):
     I = df['municipality'] == municipality
-    I |= df['gender'] == gender
-    ax = df.loc[I,:].plot(x='time', y = 'unemployed', style='-o', legend=False)
+    I &= df['gender'] == gender
+    df.loc[I,:].plot(x='time', y = 'unemployed', style='-o', legend=False)
 widgets.interact(plot_interact, 
     df = widgets.fixed(unempl),
     municipality = widgets.Dropdown(description='Municipality', 
