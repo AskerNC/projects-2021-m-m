@@ -38,7 +38,7 @@ concat = pd.concat([unempl_AUF2, unempl_AUF1[I == True]])
 concat.head(-1)
 
 #Beginning of data cleaning
-unempl = concat
+unempl = concat.copy()
 unempl.rename(columns = {"OMRÅDE": "municipality", "ALDER":"age", "KØN":"gender","TID":"time","INDHOLD":"unemployed"}, inplace=True)
 drop_columns = ["YDELSESTYPE", "AKASSE"] #Drops the data from YDELSESTYPE and AKASSE
 unempl.drop(drop_columns, axis=1, inplace=True)
@@ -48,6 +48,7 @@ I = unempl.municipality.str.contains('Region')
 I |= unempl.municipality.str.contains('Province')
 I |= unempl.municipality.str.contains('All Denmark')
 unempl = unempl.loc[I == False] #Keep everything that isn't "I"
+
 
 #Making graphs
 fig = plt.figure()
