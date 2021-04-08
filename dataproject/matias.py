@@ -44,6 +44,7 @@ unempl.loc[unempl.municipality == 'Samsø'][unempl.gender == 'Men']
 unempl.info()
 #unempl.time = unempl.time.astype(int)
 
+unempl.time = unempl.time.astype(str)
 
 fig = plt.figure()
 ax = fig.add_subplot(1,1,1)
@@ -53,3 +54,6 @@ unempl.groupby('time')['unemployed'].plot(ax=ax,legend=True)
 unempl.loc[unempl['municipality'] == 'Samsø',:].plot(ax=ax,legend=True)
 
 fig.show()
+
+
+#Graf med faktiske bruttoledige, væksten i % og den gennemsnitslige vækst i %
