@@ -74,4 +74,4 @@ widgets.interact(plot_interact,
     gender = widgets.Dropdown(description='Gender',
     options=unempl.gender.unique(),
     value='Men')
-);
+)
