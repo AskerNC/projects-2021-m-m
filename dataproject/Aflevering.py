@@ -62,7 +62,7 @@ plt.show()
 
 #Widget for all municipalities and for each gender
 import ipywidgets as widgets
-def plot_interact(df, municipality):
+def plot_interact(df, municipality, gender):
     I = df['municipality'] == municipality
     I |= df['gender'] == gender
     ax = df.loc[I,:].plot(x='time', y = 'unemployed', style='-o', legend=False)
