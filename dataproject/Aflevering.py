@@ -33,12 +33,14 @@ unempl_AUF1.loc[:,'TID']= pd.to_datetime(unempl_AUF1.loc[:,'TID'].str.replace('M
 unempl_AUF2.loc[:,'TID']= pd.to_datetime(unempl_AUF2.loc[:,'TID'].str.replace('M',''),format='%Y%m')
 unempl_AUF2.head(-1)
 #Since AUF2 has the actual unemployment numbers, but AUF1 have more recent data, we choose to stack these on top of eachother.
-I = (unempl_AUF1["TID"] > "2019-06-01")
-concat = pd.concat([unempl_AUF2, unempl_AUF1[I == True]])
-concat.head(-1)
+I = (unempl_AUF1["TID"] > "2019-06-01") #Choose to stack only rows in AUF1, where there are newer data than in AUF2
+unempl_AUF1 = unempl_AUF1.loc[I == True]
+unempl_AUF1
+#concat = pd.concat([unempl_AUF2, unempl_AUF1])
+outer = pd.merge(unempl_AUF1, unempl_AUF2, how='outer') 
 
 #Beginning of data cleaning
-unempl = concat.copy()
+unempl = outer.copy()
 unempl.rename(columns = {"OMRÅDE": "municipality", "ALDER":"age", "KØN":"gender","TID":"time","INDHOLD":"unemployed"}, inplace=True)
 drop_columns = ["YDELSESTYPE", "AKASSE"] #Drops the data from YDELSESTYPE and AKASSE
 unempl.drop(drop_columns, axis=1, inplace=True)
@@ -48,7 +50,6 @@ I = unempl.municipality.str.contains('Region')
 I |= unempl.municipality.str.contains('Province')
 I |= unempl.municipality.str.contains('All Denmark')
 unempl = unempl.loc[I == False] #Keep everything that isn't "I"
-
 
 #Making graphs
 fig = plt.figure()
