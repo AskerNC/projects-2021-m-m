@@ -28,9 +28,11 @@ variables = {'OMRÅDE':['*'],'YDELSESTYPE':['TOT'],'ALDER':['TOT'],'KØN':['M','
 unempl_AUF1 = Dst.get_data(table_id= 'AUF01', variables=variables)
 unempl_AUF2 = Dst.get_data(table_id= 'AUF02', variables=variables)
 #Since AUF2 has the actual unemployment numbers, but AUF1 have more recent data, we choose to stack these on top of eachother.
-concat = pd.concat([unempl_AUF2, unempl_AUF1[-6:-1]])
+concat = pd.concat([unempl_AUF2, unempl_AUF1[-16:-1]])
 concat.head(-1)
-unempl_AUF1.head(-1)
+unempl_AUF2.head(-1)
+
+
 #Beginning of data cleaning
 unempl = concat
 unempl.rename(columns = {"OMRÅDE": "municipality", "ALDER":"age", "KØN":"gender","TID":"time","INDHOLD":"unemployed"}, inplace=True)
