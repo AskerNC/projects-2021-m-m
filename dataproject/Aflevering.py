@@ -33,7 +33,6 @@ unempl_AUF2 = Dst.get_data(table_id= 'AUF02', variables=variables)
 #Rewrite the TID parameter to be in datetime (We go from ex. 2020M01 to 2020-01-01)
 unempl_AUF1.loc[:,'TID']= pd.to_datetime(unempl_AUF1.loc[:,'TID'].str.replace('M',''),format='%Y%m')
 unempl_AUF2.loc[:,'TID']= pd.to_datetime(unempl_AUF2.loc[:,'TID'].str.replace('M',''),format='%Y%m')
-unempl_AUF2.head(-1)
 
 #Since AUF2 has the actual unemployment numbers, but AUF1 have more recent data, we choose to merge these.
 I = (unempl_AUF1["TID"] > "2020-08-01") #Choose to stack only rows in AUF1, where there are newer data than in AUF2
@@ -45,7 +44,7 @@ unempl = outer.copy()
 unempl.rename(columns = {"OMRÅDE": "municipality", "ALDER":"age", "KØN":"gender","TID":"time","INDHOLD":"unemployed"}, inplace=True) #Renames the columns from Danish to English
 drop_columns = ["YDELSESTYPE", "AKASSE"] #Drops the data from YDELSESTYPE and AKASSE as they are unimportant for this assignment
 unempl.drop(drop_columns, axis=1, inplace=True)
-unempl = unempl.sort_values(['municipality', 'time'])
+unempl = unempl.sort_values(['municipality', 'time']) #Sorts the dataset by municipality then time
 
 #Deletes any row, where it isn't a municipality
 I = unempl.municipality.str.contains('Region')
@@ -78,14 +77,9 @@ widgets.interact(plot_interact,
 )
 
 #Procent change on total for men and women 
-unique_areas = unempl['municipality'].unique(unempl['municipality'].Series) #Creates an array of each unique municipality name
-unique_areas
+unique_areas = unempl['municipality'].unique() #Creates an array of each unique municipality name
 
-for area in unique_areas:
-    print(area)
-
-for area in unique_areas:
-    unempl['Pct change'] = unempl[unempl['municipality'] == area][unempl['gender'] == 'Total']['unemployed'].pct_change(fill_method='ffill')
-
-
+for area in unique_areas: #Takes each individual area with the restriction that gender = Total. Then it loops over each area and creates the pct change
+    I = (unempl['municipality']==area) & (unempl['gender'] == 'Total')
+    unempl.loc[I, 'pct change'] = unempl.loc[I,'unemployed'].pct_change(fill_method='ffill')
 
