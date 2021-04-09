@@ -24,28 +24,28 @@ for id in ['YDELSESTYPE','ALDER','KØN']:
     for value in values:      
         print(f' id = {value["id"]}, text = {value["text"]}')
 
-variables = {'OMRÅDE':['*'],'YDELSESTYPE':['TOT'],'ALDER':['TOT'],'KØN':['M','K'],'TID':['*']}
+#We now use the IDs found to write, which variables we want to include for each column.
+variables = {'OMRÅDE':['*'],'YDELSESTYPE':['TOT'],'ALDER':['TOT'],'KØN':['*'],'TID':['*']}
+#We now import data from the table_id with the variables we want
 unempl_AUF1 = Dst.get_data(table_id= 'AUF01', variables=variables)
 unempl_AUF2 = Dst.get_data(table_id= 'AUF02', variables=variables)
 
-#Rewrite the TID parameter to be in datetime
+#Rewrite the TID parameter to be in datetime (We go from ex. 2020M01 to 2020-01-01)
 unempl_AUF1.loc[:,'TID']= pd.to_datetime(unempl_AUF1.loc[:,'TID'].str.replace('M',''),format='%Y%m')
 unempl_AUF2.loc[:,'TID']= pd.to_datetime(unempl_AUF2.loc[:,'TID'].str.replace('M',''),format='%Y%m')
 unempl_AUF2.head(-1)
+
 #Since AUF2 has the actual unemployment numbers, but AUF1 have more recent data, we choose to merge these.
-I = (unempl_AUF1["TID"] > "2019-06-01") #Choose to stack only rows in AUF1, where there are newer data than in AUF2
-unempl_AUF1 = unempl_AUF1.loc[I == True]
-unempl_AUF1
-#concat = pd.concat([unempl_AUF2, unempl_AUF1])
-outer = pd.merge(unempl_AUF1, unempl_AUF2, how='outer') 
-outer.head(-1)
-unemlp3 = unempl_AUF2.append(unempl_AUF1)
+I = (unempl_AUF1["TID"] > "2020-08-01") #Choose to stack only rows in AUF1, where there are newer data than in AUF2
+unempl_AUF1 = unempl_AUF1.loc[I == True] #Overwrite the variable, where I is true.
+outer = pd.merge(unempl_AUF1, unempl_AUF2, how='outer') #merge the two data sets
 
 #Beginning of data cleaning
 unempl = outer.copy()
-unempl.rename(columns = {"OMRÅDE": "municipality", "ALDER":"age", "KØN":"gender","TID":"time","INDHOLD":"unemployed"}, inplace=True)
-drop_columns = ["YDELSESTYPE", "AKASSE"] #Drops the data from YDELSESTYPE and AKASSE
+unempl.rename(columns = {"OMRÅDE": "municipality", "ALDER":"age", "KØN":"gender","TID":"time","INDHOLD":"unemployed"}, inplace=True) #Renames the columns from Danish to English
+drop_columns = ["YDELSESTYPE", "AKASSE"] #Drops the data from YDELSESTYPE and AKASSE as they are unimportant for this assignment
 unempl.drop(drop_columns, axis=1, inplace=True)
+unempl = unempl.sort_values(['municipality', 'time'])
 
 #Deletes any row, where it isn't a municipality
 I = unempl.municipality.str.contains('Region')
@@ -76,3 +76,24 @@ widgets.interact(plot_interact,
     options=unempl.gender.unique(),
     value='Men')
 )
+
+#Procent change on total for men and women
+for area in unempl['municipality'].unique():
+    unempl['pct change'] = unempl[unempl['municipality'] == area][unempl['gender'] == 'Total']['unemployed'].pct_change(fill_method='ffill')
+    return unempl.loc[unempl['municipality'] == area][unempl['gender'] == 'Total'].head(5)
+
+unempl.loc[unempl['municipality'] == 'Samsø'][unempl['gender'] == 'Total'].head(5)
+unempl.head(5)
+unempl['municipality'].unique()
+
+
+
+
+# for AREA in unempl['municipality']:
+#     for MONTH in unempl['time']+1:
+#          pct = (unempl.loc[unempl['municipality'] == AREA][unempl['time'] == MONTH][unempl['gender'] == 'Total'] 
+#          - unempl.loc[unempl['municipality'] == AREA][unempl['time'] == MONTH-1][unempl['gender'] == 'Total'])/
+#          unempl.loc[unempl['municipality'] == AREA][unempl['time'] == MONTH-1][unempl['gender'] == 'Total'] *100
+
+unempl.loc[unempl['municipality'] == 'Samsø'][unempl['time'] == '2021-03-01'][unempl['gender'] == 'Total']
+
