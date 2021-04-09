@@ -88,7 +88,7 @@ unempl_pct = unempl[unempl['gender'] == 'Total'] #create a variable only consist
 
 def plot_interact_pct(df, municipality):
     I = df['municipality'] == municipality
-    df.loc[I,:].plot(x='time', y = 'pct change', kind='bar', style='-o', legend=False, xticks=())
+    df.loc[I,:].plot(x='time', y = 'pct change', kind='bar', style='-o', legend=False, xticks=()) #xticks = empty list to avoid all dates being included
 widgets.interact(plot_interact_pct, 
     df = widgets.fixed(unempl_pct),
     municipality = widgets.Dropdown(description='Municipality', 
