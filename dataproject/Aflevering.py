@@ -46,6 +46,7 @@ drop_columns = ["YDELSESTYPE", "AKASSE"] #Drops the data from YDELSESTYPE and AK
 unempl.drop(drop_columns, axis=1, inplace=True)
 unempl = unempl.sort_values(['municipality', 'time']) #Sorts the dataset by municipality then time
 
+
 #Deletes any row, where it isn't a municipality
 I = unempl.municipality.str.contains('Region')
 I |= unempl.municipality.str.contains('Province')
