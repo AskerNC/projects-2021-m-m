@@ -83,3 +83,14 @@ for area in unique_areas: #Takes each individual area with the restriction that 
     I = (unempl['municipality']==area) & (unempl['gender'] == 'Total')
     unempl.loc[I, 'pct change'] = unempl.loc[I,'unemployed'].pct_change(fill_method='ffill')
 
+#Create widget to see pct_change for each municipality for gender = total
+
+def plot_interact_pct(df, municipality):
+    I = df['municipality'] == municipality
+    df.loc[I,:].plot(x='time', y = 'pct change', style='hist', legend=False)
+widgets.interact(plot_interact_pct, 
+    df = widgets.fixed(unempl),
+    municipality = widgets.Dropdown(description='Municipality', 
+    options=unempl.municipality.unique(), 
+    value='Roskilde')
+)
