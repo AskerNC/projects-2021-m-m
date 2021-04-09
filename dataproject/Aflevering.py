@@ -61,7 +61,7 @@ unempl.loc[unempl['municipality'] == 'Samsø', :][unempl['gender'] == 'Men'].plo
 plt.show()
 
 
-#Widget for all municipalities and for each gender
+#Widget for unemployed sortable by municipality and gender
 import ipywidgets as widgets
 def plot_interact(df, municipality, gender):
     I = df['municipality'] == municipality
@@ -77,22 +77,15 @@ widgets.interact(plot_interact,
     value='Men')
 )
 
-#Procent change on total for men and women
-for area in unempl['municipality'].unique():
-    unempl['pct change'] = unempl[unempl['municipality'] == area][unempl['gender'] == 'Total']['unemployed'].pct_change(fill_method='ffill')
+#Procent change on total for men and women 
+unique_areas = unempl['municipality'].unique(unempl['municipality'].Series) #Creates an array of each unique municipality name
+unique_areas
 
-unempl.loc[unempl['municipality'] == 'Samsø'][unempl['gender'] == 'Total'].head(5)
-unempl.head(5)
-unempl['municipality'].unique()
+for area in unique_areas:
+    print(area)
+
+for area in unique_areas:
+    unempl['Pct change'] = unempl[unempl['municipality'] == area][unempl['gender'] == 'Total']['unemployed'].pct_change(fill_method='ffill')
 
 
-
-
-# for AREA in unempl['municipality']:
-#     for MONTH in unempl['time']+1:
-#          pct = (unempl.loc[unempl['municipality'] == AREA][unempl['time'] == MONTH][unempl['gender'] == 'Total'] 
-#          - unempl.loc[unempl['municipality'] == AREA][unempl['time'] == MONTH-1][unempl['gender'] == 'Total'])/
-#          unempl.loc[unempl['municipality'] == AREA][unempl['time'] == MONTH-1][unempl['gender'] == 'Total'] *100
-
-unempl.loc[unempl['municipality'] == 'Samsø'][unempl['time'] == '2021-03-01'][unempl['gender'] == 'Total']
 
