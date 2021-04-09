@@ -80,7 +80,6 @@ widgets.interact(plot_interact,
 #Procent change on total for men and women
 for area in unempl['municipality'].unique():
     unempl['pct change'] = unempl[unempl['municipality'] == area][unempl['gender'] == 'Total']['unemployed'].pct_change(fill_method='ffill')
-    return unempl.loc[unempl['municipality'] == area][unempl['gender'] == 'Total'].head(5)
 
 unempl.loc[unempl['municipality'] == 'Samsø'][unempl['gender'] == 'Total'].head(5)
 unempl.head(5)
