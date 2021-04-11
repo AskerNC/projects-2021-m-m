@@ -1,6 +1,6 @@
 # Data analysis project
 
-Our project is titled **Danish Unemployment** and is about how the Danish Unemployment has changed during the last 5 years. We both look at the general picture, but also seperate the unemployment into men and women. We have also created a widget for looking at each municipality seperately.
+Our project is titled **Development in Danish unemployment, 2007-2020** and is about how the Danish Unemployment has changed during the period. We both look at the general picture both through the absolute number and through pct. change pr. month. We have also created a widget for looking at each municipality seperately.
 
 The **results** of the project can be seen from running [dataproject.ipynb](dataproject.ipynb).
 
