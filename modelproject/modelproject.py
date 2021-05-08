@@ -1,45 +1,28 @@
 from scipy import optimize
 import numpy as np
-
+from types import SimpleNamespace
 # Utility function
-def u_func(h, c, par):
+def max_func(par):
     """
-    Cobb-Douglas utility function for consumption and housing quality
+    Intertemporal consumer utility function in two periods
 
     Args:
 
-        h (float): housing quality and equal to housing price
-        c (float): other consumption
-        par: simplenamespace containing relevant parameters
-            phi (float): C-D weights
-            epsilon (float): public housing assement factor
-            r (float): mortgage interest
-            tau_g (float): base housing tax
-            tau_p (float): progressive housing tax 
-            p_bar (float): cutoff price
-            m (float): cash-on-hand
+       
     Returns:
     
-        (float): utility
+        (float): Optimal consumption in period 1
     """
-    return c**(1-par.phi)*h**par.phi
+    return np.log(par.C_1) + np.log((1+par.r)(par.V_1 + par.Y_L1 - par.T1- par.C_1) + par.Y_L2 - par.T_2)/(1+par.phi)
 
 # Optimize function
-def u_optimize(par):
+def max_optimize(par):
     """
-    Optimises u_func with respect to housing quality and finds housing quality and consumption at the optimum
+    Optimises max_func 
 
      Args:
 
-        h (float): housing quality and equal to housing price
-        par: simplenamespace containing relevant parameters
-            phi (float): C-D weights
-            epsilon (float): public housing assement factor
-            r (float): mortgage interest
-            tau_g (float): base housing tax
-            tau_p (float): progressive housing tax 
-            p_bar (float): cutoff price
-            m (float): cash-on-hand
+        
 
     Local variables:
 
@@ -52,19 +35,17 @@ def u_optimize(par):
         c_star (float): optimal consumption
         u_star (float): utility in optimum
     """
-    def objective(h, par):
+    def objective(par):
         # Use monotonicity to find c as a function of h
-        p_thilde = h * par.epsilon
-        tax = par.r * h + par.tau_g * p_thilde + par.tau_p * max(p_thilde-par.p_bar, 0)
-        c = par.m - tax
-        return -u_func(h, c, par)
+        par.V_2 = (1+par.r)(par.V_1 + par.Y_L1 - par.T1- par.C_1)
+        par.V_2 = (1+par.r)*par.S_1
+        par.C_1  = par.V_1 + par.Y_L2 - par.T_1 + (par.Y_L2-par.T_2)/(1 + par.r) - par.C_2/(1+par.r)
+        return -max_func(par)
     
     res = optimize.minimize_scalar(objective, method ='brent', args = (par))
 
-    # Get optimal h, using monotonicity to find optimal c, then using u_func to find utility in optimum
-    h_star = res.x
-    p_thilde = h_star * par.epsilon
-    tax = par.r * h_star + par.tau_g * p_thilde + par.tau_p * max(p_thilde-par.p_bar, 0)
-    c_star = par.m - tax
-    u_star = u_func(h_star, c_star, par)
-    return h_star, c_star, u_star
+    # Get optimal c_1, using monotonicity to find optimal c, then using u_func to find utility in optimum
+    c_1star = res.x
+    u_star = np.log(c_1star) #+ (np.log(c_2star)/(1+par.phi))
+    return c_1star, u_star
+
