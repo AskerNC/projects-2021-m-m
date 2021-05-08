@@ -1,6 +1,29 @@
 from scipy import optimize
 import numpy as np
 
+# Utility function
+def u_func(h, c, par):
+    """
+    Cobb-Douglas utility function for consumption and housing quality
+
+    Args:
+
+        h (float): housing quality and equal to housing price
+        c (float): other consumption
+        par: simplenamespace containing relevant parameters
+            phi (float): C-D weights
+            epsilon (float): public housing assement factor
+            r (float): mortgage interest
+            tau_g (float): base housing tax
+            tau_p (float): progressive housing tax 
+            p_bar (float): cutoff price
+            m (float): cash-on-hand
+    Returns:
+    
+        (float): utility
+    """
+    return c**(1-par.phi)*h**par.phi
+
 # Optimize function
 def u_optimize(par):
     """
