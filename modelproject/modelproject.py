@@ -38,7 +38,7 @@ def max_optimize(par):
     def objective(C_1, par):
         # Use monotonicity to find c as a function of h
         #par.V_2 = (1+par.r)(par.V_1 + par.Y_L1 - par.T_1 - C_1)
-        return -max_func(C_1, par)
+        return -max_func(C_1=C_1, par=par)
     
     #Creating bounds for optimization
     lower = 0
