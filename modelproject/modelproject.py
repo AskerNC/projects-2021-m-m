@@ -38,7 +38,6 @@ def max_optimize(par):
     def objective(par):
         # Use monotonicity to find c as a function of h
         par.V_2 = (1+par.r)(par.V_1 + par.Y_L1 - par.T1- par.C_1)
-        par.V_2 = (1+par.r)*par.S_1
         par.C_1  = par.V_1 + par.Y_L2 - par.T_1 + (par.Y_L2-par.T_2)/(1 + par.r) - par.C_2/(1+par.r)
         return -max_func(par)
     
