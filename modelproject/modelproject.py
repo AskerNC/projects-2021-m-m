@@ -53,3 +53,7 @@ def max_optimize(par):
     U_star = np.log(C_1star) + (np.log(C_2star)/(1+par.phi))
     return C_1star, C_2star, U_star
 
+
+par = SimpleNamespace()'
+par.r = 0.02
+par.
