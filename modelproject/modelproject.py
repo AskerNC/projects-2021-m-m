@@ -54,6 +54,15 @@ def max_optimize(par):
     return C_1star, C_2star, U_star
 
 
-par = SimpleNamespace()'
+#Testing model(good outline for later)
+
+par = SimpleNamespace()
 par.r = 0.02
-par.
+par.V_1 = 5
+par.Y_L1 = 2
+par.Y_L2 = 2
+par.T1 = 0.5
+par.T2 = 0.5
+par.phi = 0.02
+
+c1, c2, u = max_optimize(par)
