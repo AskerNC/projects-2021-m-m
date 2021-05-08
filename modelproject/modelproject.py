@@ -40,7 +40,7 @@ def max_optimize(par):
         par.V_2 = (1+par.r)(par.V_1 + par.Y_L1 - par.T1 - C_1)
         return -max_func(C_1, par)
     
-    res = optimize.minimize_scalar(objective, method ='brent', args = (par))
+    res = optimize.minimize_scalar(objective, method ='bounded', args = (par))
 
     # Get optimal c_1, using monotonicity to find optimal c, then using u_func to find utility in optimum
     C_1star = res.x
