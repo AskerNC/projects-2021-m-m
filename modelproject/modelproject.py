@@ -45,6 +45,7 @@ def max_optimize(par):
 
     # Get optimal c_1, using monotonicity to find optimal c, then using u_func to find utility in optimum
     c_1star = res.x
-    u_star = np.log(c_1star) #+ (np.log(c_2star)/(1+par.phi))
+    c_2star = (1+par.r)(par.V_1 + par.Y_L1 - par.T1- c_1star)
+    u_star = np.log(c_1star) + (np.log(c_2star)/(1+par.phi))
     return c_1star, u_star
 
