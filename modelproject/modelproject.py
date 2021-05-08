@@ -2,7 +2,7 @@ from scipy import optimize
 import numpy as np
 from types import SimpleNamespace
 # Utility function
-def max_func(par):
+def max_func(c_1, par):
     """
     Intertemporal consumer utility function in two periods
 
@@ -13,7 +13,7 @@ def max_func(par):
     
         (float): Optimal consumption in period 1
     """
-    return np.log(par.C_1) + np.log((1+par.r)(par.V_1 + par.Y_L1 - par.T1- par.C_1) + par.Y_L2 - par.T_2)/(1+par.phi)
+    return np.log(c_1) + np.log((1+par.r)(par.V_1 + par.Y_L1 - par.T1- par.C_1) + par.Y_L2 - par.T_2)/(1+par.phi)
 
 # Optimize function
 def max_optimize(par):
@@ -35,11 +35,10 @@ def max_optimize(par):
         c_star (float): optimal consumption
         u_star (float): utility in optimum
     """
-    def objective(par):
+    def objective(c_1, par):
         # Use monotonicity to find c as a function of h
         par.V_2 = (1+par.r)(par.V_1 + par.Y_L1 - par.T1- par.C_1)
-        par.C_1  = par.V_1 + par.Y_L2 - par.T_1 + (par.Y_L2-par.T_2)/(1 + par.r) - par.C_2/(1+par.r)
-        return -max_func(par)
+        return -max_func(c_1, par)
     
     res = optimize.minimize_scalar(objective, method ='brent', args = (par))
 
