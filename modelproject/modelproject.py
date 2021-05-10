@@ -13,7 +13,7 @@ def max_func(C_1, par):
     
         (float): Optimal consumption in period 1
     """
-    return np.log(C_1) + np.log((1+par.r)(par.V_1 + par.Y_L1 - par.T_1 - C_1) + par.Y_L2 - par.T_2)/(1+par.phi)
+    return np.log(C_1) + np.log((1+par.r)*(par.V_1 + par.Y_L1 - par.T_1 - C_1) + par.Y_L2 - par.T_2)/(1+par.phi)
 
 # Optimize function
 def max_optimize(par):
@@ -47,9 +47,9 @@ def max_optimize(par):
     #Running the optimization function
     res = optimize.minimize_scalar(objective, method ='bounded', bounds = (lower,upper), args = (par))
 
-    # Get optimal c_1, using monotonicity to find optimal c, then using u_func to find utility in optimum
+    # Get optimal C_1, using monotonicity to find optimal C_2, then using u_func to find utility in optimum
     C_1star = res.x
-    C_2star = (1+par.r)(par.V_1 + par.Y_L1 - par.T_1 - C_1star)
+    C_2star = (1+par.r)*(par.V_1 + par.Y_L1 - par.T_1 - C_1star)
     U_star = np.log(C_1star) + (np.log(C_2star)/(1+par.phi))
     return C_1star, C_2star, U_star
 
@@ -66,3 +66,5 @@ par.T_2 = 0.5
 par.phi = 0.02
 
 c1, c2, u = max_optimize(par)
+
+print(c1, c2, u)
