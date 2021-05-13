@@ -1,44 +1,60 @@
+#Import relevant packages
 from scipy import optimize
 import numpy as np
 from types import SimpleNamespace
+import matplotlib.pyplot as plt
+
 # Utility function
-def max_func(C_1, par):
+def inter_utility(C_1, par):
     """
     Intertemporal consumer utility function in two periods
 
     Args:
 
-       
+        C_1 (float): consumption in period 1
+        par: simplenamespace containing relevant parameters
+            T_1 (float): lump-sum tax in period 1
+            T_2 (float): lump-sum tax in period 2
+            Y_L1 (float): labour income in period 1
+            Y_L2 (float): labour income in period 2
+            V_1 (float): initial endowment
+            phi (float): degree of impatience
+            r (float): rental rate
+            
+
     Returns:
     
-        (float): Optimal consumption in period 1
+        (float): total utility
     """
     return np.log(C_1) + np.log((1+par.r)*(par.V_1 + par.Y_L1 - par.T_1 - C_1) + par.Y_L2 - par.T_2)/(1+par.phi)
 
-# Optimize function
-def max_optimize(par):
+# Utility optimise function
+def u_optimise(par):
     """
     Optimises max_func 
 
      Args:
 
-        
+     C_1 (float): consumption in period 1
+        par: simplenamespace containing relevant parameters
+            T_1 (float): lump-sum tax in period 1
+            T_2 (float): lump-sum tax in period 2
+            Y_L1 (float): labour income in period 1
+            Y_L2 (float): labour income in period 2
+            V_1 (float): initial endowment
+            phi (float): degree of impatience
+            r (float): rental rate
 
-    Local variables:
-
-        p_thilde (float): public housing assement price
-        tax (float): interest rates and tax paid as a function of housing quality
-        c (float): other consumption
     Returns:
     
-        h_star (float): optimal housing quality
-        c_star (float): optimal consumption
-        u_star (float): utility in optimum
+        C_1star (float): optimal consumption in period 1
+        C_2star (float): optimal consumption in period 2
+        U_star (float): utility in optimum
     """
     def objective(C_1, par):
         # Use monotonicity to find c as a function of h
         #par.V_2 = (1+par.r)(par.V_1 + par.Y_L1 - par.T_1 - C_1)
-        return -max_func(C_1=C_1, par=par)
+        return -inter_utility(C_1, par)
     
     #Creating bounds for optimization
     lower = 0
@@ -53,18 +69,37 @@ def max_optimize(par):
     U_star = np.log(C_1star) + (np.log(C_2star)/(1+par.phi))
     return C_1star, C_2star, U_star
 
+# Plot function
+def two_figures(x_left, y_left, title_left, xlabel_left, ylabel_left, x_right, y_right, title_right, xlabel_right, ylabel_right, grid=True):
+    """ 
+    Plots two aligned figures. 
+    
+    Args: should be self explanatory...
+
+    Returns: Two figures in 2D
+    """
+    # a. initialise figure
+    fig = plt.figure(figsize=(10,4))# figsize is in inches...
+
+    # b. left plot
+    ax_left = fig.add_subplot(1,2,1)
+    ax_left.plot(x_left,y_left)
+
+    ax_left.set_title(title_left)
+    ax_left.set_xlabel(xlabel_left)
+    ax_left.set_ylabel(ylabel_left)
+    ax_left.grid(grid)
+
+    # c. right plot
+    ax_right = fig.add_subplot(1,2,2)
+
+    ax_right.plot(x_right, y_right)
+
+    ax_right.set_title(title_right)
+    ax_right.set_xlabel(xlabel_right)
+    ax_right.set_ylabel(ylabel_right)
+    ax_right.grid(grid)
 
 #Testing model(good outline for later)
 
-par = SimpleNamespace()
-par.r = 0.02
-par.V_1 = 5
-par.Y_L1 = 2
-par.Y_L2 = 2
-par.T_1 = 0.5
-par.T_2 = 0.5
-par.phi = 0.02
 
-c1, c2, u = max_optimize(par)
-
-print(c1, c2, u)
