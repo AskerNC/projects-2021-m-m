@@ -101,10 +101,11 @@ from mpl_toolkits import mplot3d
 import numpy as np
 import matplotlib.pyplot as plt
 %matplotlib widget
-fig = plt.figure()
+fig = plt.figure(figsize=(10,7))
 ax = plt.axes(projection='3d')
-ax.set_xlabel('r')
-ax.set_ylabel('phi')
-ax.set_zlabel('U');
-ax.plot_surface(r_values, phi_values, u_values, rstride=1, cstride=1,
+ax.plot_surface(phi_values,r_values, u_values, rstride=1, cstride=1,
                 cmap='viridis', edgecolor='none');
+ax.set_xlabel('$\phi$')
+ax.set_ylabel('$r$')
+ax.set_zlabel('$U$')
+ax.set_title('Utility for values of $\phi$ and $r$');
