@@ -2,7 +2,6 @@
 from scipy import optimize
 import numpy as np
 from types import SimpleNamespace
-import copy
 import matplotlib.pyplot as plt
 
 # Utility function
