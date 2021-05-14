@@ -5,6 +5,18 @@ from types import SimpleNamespace
 import copy
 import matplotlib.pyplot as plt
 
+
+par = SimpleNamespace()
+
+par.r = 0.02
+par.V_1 = 5
+par.Y_L1 = 2
+par.Y_L2 = 2
+par.T_1 = 0.5
+par.T_2 = 0.5
+par.phi = 0.3
+
+
 # Utility function
 def inter_utility(C_1, par):
     """
@@ -69,3 +81,30 @@ def u_optimise(par):
 
 
 #3D graph
+N = 100
+shape_tuple = (N,N)
+r_values = np.empty(shape_tuple)
+phi_values = np.empty(shape_tuple)
+u_values = np.empty(shape_tuple)
+
+for i in range(N):
+        for j in range(N):
+            par.r = i/100
+            par.phi = j/100
+            r_values[i,j] = par.r
+            phi_values[i,j] = par.phi
+            c1, c2, u = u_optimise(par)
+            u_values[i,j] = u
+    
+
+from mpl_toolkits import mplot3d
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib widget
+fig = plt.figure()
+ax = plt.axes(projection='3d')
+ax.set_xlabel('r')
+ax.set_ylabel('phi')
+ax.set_zlabel('U');
+ax.plot_surface(r_values, phi_values, u_values, rstride=1, cstride=1,
+                cmap='viridis', edgecolor='none');
