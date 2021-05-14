@@ -1,4 +1,4 @@
-Functions
+#Functions
 
 # Import relevant packages
 import numpy as np
