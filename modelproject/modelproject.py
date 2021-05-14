@@ -20,7 +20,6 @@ def inter_utility(C_1, par):
             V_1 (float): initial endowment
             phi (float): degree of impatience
             r (float): rental rate
-            
 
     Returns:
     
@@ -52,8 +51,6 @@ def u_optimise(par):
         U_star (float): utility in optimum
     """
     def objective(C_1, par):
-        # Use monotonicity to find c as a function of h
-        #par.V_2 = (1+par.r)(par.V_1 + par.Y_L1 - par.T_1 - C_1)
         return -inter_utility(C_1, par)
     
     #Creating bounds for optimization
@@ -68,6 +65,65 @@ def u_optimise(par):
     C_2star = (1+par.r)*(par.V_1 + par.Y_L1 - par.T_1 - C_1star) + par.Y_L2 - par.T_2
     U_star = np.log(C_1star) + (np.log(C_2star)/(1+par.phi))
     return C_1star, C_2star, U_star
+
+
+#Array/container function(not used)
+#def array(a, b, N, par, o_func):
+    """
+    Creates array using linspace and 3 empty containers
+
+     Args:
+
+     a (float): starting value in linspace
+     b (float): end value in linspace
+     N (integer): number of objects in array and containers
+
+    Returns:
+    
+        array1 (numpy.ndarray): array containing N objects with values between a and b
+        container1 (numpy.ndarray): empty container
+        container2 (numpy.ndarray): empty container
+        container3 (numpy.ndarray): empty container
+    """
+    array1 = np.linspace(a, b, N)
+    container1 = np.zeros(N)
+    container2 = np.zeros(N)
+    container3 = np.zeros(N)
+
+    return array1, container1, container2, container3
+
+
+#Create and optimise over an array function
+def o_array(a, b, N, 'obj', par):
+    """
+    Creates array using linspace and 3 empty containers then optimises the 
+    intertemporal utility function looping over the array
+
+     Args:
+
+     a (float): starting value in linspace
+     b (float): end value in linspace
+     N (integer): number of objects in array and containers
+
+    Returns:
+    
+        array1 (numpy.ndarray): array containing N objects with values between a and b
+        container1 (numpy.ndarray): empty container
+        container2 (numpy.ndarray): empty container
+        container3 (numpy.ndarray): empty container
+    """
+    array1 = np.linspace(a, b, N)
+    container1 = np.zeros(N)
+    container2 = np.zeros(N)
+    container3 = np.zeros(N)
+
+    for i in range(N):
+        par=par.'obj' = array1[i]
+        container1[i], container2[i], container3[i] = u_optimise(par=par)
+
+    return container1, container2, container3
+
+
 
 # Plot function
 def two_figures(x_left, y_left, title_left, xlabel_left, ylabel_left, x_right, y_right, title_right, xlabel_right, ylabel_right, grid=True):
@@ -100,6 +156,24 @@ def two_figures(x_left, y_left, title_left, xlabel_left, ylabel_left, x_right, y
     ax_right.set_ylabel(ylabel_right)
     ax_right.grid(grid)
 
-#Testing model(good outline for later)
+def one_figure(x, y, title, xlabel, ylabel, grid=True):
+    """ 
+    Plots one figure. 
+    
+    Args: should be self explanatory...
+
+    Returns: One figures in 2D
+    """
+    # a. initialise figure
+    fig = plt.figure(figsize=(10,4))# figsize is in inches...
+
+    # b. create plot
+    ax = fig.add_subplot(1,2,1)
+    ax.plot(x,y)
+
+    ax.set_title(title)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.grid(grid)
 
 
