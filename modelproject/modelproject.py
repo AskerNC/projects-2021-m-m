@@ -2,6 +2,7 @@
 from scipy import optimize
 import numpy as np
 from types import SimpleNamespace
+import copy
 import matplotlib.pyplot as plt
 
 # Utility function
@@ -67,8 +68,8 @@ def u_optimise(par):
     return C_1star, C_2star, U_star
 
 
-#Array/container function(not used)
-#def array(a, b, N, par, o_func):
+#Array/container function
+def array(a, b, N):
     """
     Creates array using linspace and 3 empty containers
 
@@ -93,8 +94,8 @@ def u_optimise(par):
     return array1, container1, container2, container3
 
 
-#Create and optimise over an array function
-def o_array(a, b, N, 'obj', par):
+#Create and optimise over an array function(doesn't work)
+#def o_array(a, b, N, ar_var, par):
     """
     Creates array using linspace and 3 empty containers then optimises the 
     intertemporal utility function looping over the array
@@ -117,11 +118,13 @@ def o_array(a, b, N, 'obj', par):
     container2 = np.zeros(N)
     container3 = np.zeros(N)
 
-    for i in range(N):
-        par=par.'obj' = array1[i]
-        container1[i], container2[i], container3[i] = u_optimise(par=par)
+    par2 = copy.copy(par)
 
-    return container1, container2, container3
+    for i in range(N):
+        par2.ar_var = array1[i]
+        container1[i], container2[i], container3[i] = u_optimise(par2)
+
+    return container1, container2, container3, array1
 
 
 
