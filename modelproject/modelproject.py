@@ -179,3 +179,70 @@ def one_figure(x, y, title, xlabel, ylabel, grid=True):
     ax.grid(grid)
 
 
+# Utility function extension
+def inter_utility_ext(C_1, par):
+    """
+    Intertemporal consumer utility function in two periods
+
+    Args:
+
+        C_1 (float): consumption in period 1
+        par: simplenamespace containing relevant parameters
+            T_1 (float): lump-sum tax in period 1
+            T_2 (float): lump-sum tax in period 2
+            Y_L1 (float): labour income in period 1
+            Y_L2 (float): labour income in period 2
+            V_1 (float): initial endowment
+            phi (float): degree of impatience
+            r_rf (float): risk free rate
+            r_rb
+            alpha
+            beta
+
+    Returns:
+    
+        (float): total utility
+    """
+    return np.log(C_1) + np.log(par.alpha*(1+par.r_rf)*(par.V_1 + par.Y_L1 - par.T_1 - C_1) + par.beta*(1-par.alpha)*(1+par.r_rb)*(par.V_1 + par.Y_L1 - par.T_1 - C_1) + par.Y_L2 - par.T_2)/(1+par.phi)
+
+# Utility optimise function extension
+def u_optimise_ext(par):
+    """
+    Optimises max_func 
+
+     Args:
+
+     C_1 (float): consumption in period 1
+        par: simplenamespace containing relevant parameters
+            T_1 (float): lump-sum tax in period 1
+            T_2 (float): lump-sum tax in period 2
+            Y_L1 (float): labour income in period 1
+            Y_L2 (float): labour income in period 2
+            V_1 (float): initial endowment
+            phi (float): degree of impatience
+            r_rf (float): risk free rate
+            r_rb
+            alpha
+            beta
+
+    Returns:
+    
+        C_1star (float): optimal consumption in period 1
+        C_2star (float): optimal consumption in period 2
+        U_star (float): utility in optimum
+    """
+    def objective(C_1, par):
+        return -inter_utility_ext(C_1, par)
+    
+    #Creating bounds for optimization
+    lower = 0
+    upper = par.V_1 + par.Y_L1 - par.T_1 + (par.Y_L2 - par.T_2)/(par.alpha*(1+par.r_rf)+par.beta*(1-par.alpha)*(1+par.r_rb))
+
+    #Running the optimization function
+    res = optimize.minimize_scalar(objective, method ='bounded', bounds = (lower,upper), args = (par))
+
+    # Get optimal C_1, using monotonicity to find optimal C_2, then using u_func to find utility in optimum
+    C_1star = res.x
+    C_2star = par.alpha*(1+par.r_rf)*(par.V_1 + par.Y_L1 - par.T_1 - C_1star) + par.beta*(1-par.alpha)*(1+par.r_rb)*(par.V_1 + par.Y_L1 - par.T_1 - C_1star) + par.Y_L2 - par.T_2
+    U_star = np.log(C_1star) + (np.log(C_2star)/(1+par.phi))
+    return C_1star, C_2star, U_star
