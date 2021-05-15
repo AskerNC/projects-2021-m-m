@@ -1,6 +1,6 @@
 # Model analysis project
 
-Our project is titled **PROJECT TITLE** and is about EXPLAIN.
+Our project is titled **Intertemporal consumer problem** and is about about a consumers consumption choices in two periods given a set of predifined parametervalues. The standard intertemporal consumption model is exptended to include both a risk free rental rate and a risky rental rate with a higher rate.
 
 The **results** of the project can be seen from running [modelproject.ipynb](modelproject.ipynb).
 
